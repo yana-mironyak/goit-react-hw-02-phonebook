@@ -1,6 +1,4 @@
 import React from "react";
-import { Formik } from 'formik';
-import * as yup from 'yup';
 import css from './App.module.css';
 
 
@@ -8,13 +6,6 @@ import ContactsForm from "./ContactsForm/ContactsForm";
 import ContactsList from "components/ContactsList/ContactsList";
 import Filter from 'components/Filter/Filter';
 import { nanoid } from "nanoid";
-
-const phoneRegExp = /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/;
-
-const schema = yup.object().shape({
-  name: yup.string().min(2, 'Your name is too short').required(),
-  number: yup.string().matches(phoneRegExp, 'Phone number must be digits and can contain spaces, dashes, parentheses and can start with +').required(),
-})
 
 export class App extends React.Component {
   state = {
@@ -52,15 +43,14 @@ export class App extends React.Component {
   
   render() {
     const filteredContacts = this.getFilteredContacts();
+    const { name, number } = this.state;
     
     return (
       <div className={css.container}>
         <h1 className={css.mainTitle}>Phonebook</h1>
-        <Formik initialValues={this.state} validationSchema={schema} onSubmit={this.handleSubmit}>
-          <ContactsForm />
-        </Formik>
+        <ContactsForm initialValues={{name, number}} onSubmit={this.handleSubmit}/>
         <h2 className={css.title}>Contacts</h2>
-        <Filter filter={this.filter} changeFilter={this.changeFilter} />
+        <Filter filter={this.state.filter} changeFilter={this.changeFilter} />
         <ContactsList filteredContacts={filteredContacts} onDeleteContact={this.deleteContact} />
       </div>
     )
