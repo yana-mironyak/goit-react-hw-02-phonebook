@@ -9,14 +9,6 @@ import ContactsList from "components/ContactsList/ContactsList";
 import Filter from 'components/Filter/Filter';
 import { nanoid } from "nanoid";
 
-export const App = () => {
-  return (
-    <>
-      <Phonebook/>
-    </>
-  );
-};
-
 const phoneRegExp = /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/;
 
 const schema = yup.object().shape({
@@ -24,7 +16,7 @@ const schema = yup.object().shape({
   number: yup.string().matches(phoneRegExp, 'Phone number must be digits and can contain spaces, dashes, parentheses and can start with +').required(),
 })
 
-class Phonebook extends React.Component {
+export class App extends React.Component {
   state = {
     contacts: [
       {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
@@ -39,7 +31,7 @@ class Phonebook extends React.Component {
 
   handleSubmit = ({ name, number }, { resetForm }) => {
     const id = nanoid();
-    this.state.contacts.find(contact => contact.name.toLowerCase() === name) ? alert(`${name} is already in contacts`) :
+    this.state.contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase()) ? alert(`${name} is already in contacts`) :
     this.setState(prevState => ({contacts: [...prevState.contacts, {name, number, id}]}))
     resetForm();
   };
@@ -56,7 +48,6 @@ class Phonebook extends React.Component {
     this.setState(prevState => ({
       contacts: prevState.contacts.filter(contact => contact.id !== contactId)
     }))
-
   }
   
   render() {
