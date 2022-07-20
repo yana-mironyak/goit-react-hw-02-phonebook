@@ -32,9 +32,9 @@ export default ContactsForm;
 
 ContactsForm.propTypes = {
     initialValues: PropTypes.shape({
-        name: PropTypes.string,
-        number: PropTypes.string,
+        name: PropTypes.string.isRequired,
+        number: PropTypes.string.isRequired,
     }),
-    onSubmit: PropTypes.func,
+    onSubmit: PropTypes.func.isRequired,
 }
 
